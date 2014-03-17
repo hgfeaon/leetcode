@@ -15,11 +15,11 @@ public:
         vector<vector<int> > tmp;
         vector<int> sel;
         
-        comsum(candidates, 0, target, sel, tmp);
+        dfs(candidates, 0, target, sel, tmp);
         return tmp;
     }
     
-    void comsum(vector<int>& nums, int pos, int tar, vector<int>& sel, vector<vector<int> >& res) {
+    void dfs(vector<int>& nums, int pos, int tar, vector<int>& sel, vector<vector<int> >& res) {
         if (tar == 0) {
             res.push_back(sel);
             return;
@@ -31,7 +31,7 @@ public:
             if (add != 0) {
                 sel.push_back(cur);
             }
-            comsum(nums, pos + 1, tar - add, sel, res);
+            dfs(nums, pos + 1, tar - add, sel, res);
         }
         for (int i = add/cur - 1; i>0; i--) {
             sel.pop_back();
