@@ -11,6 +11,7 @@ struct RandomListNode {
  
 class Solution {
 public:
+    // 1. with a map
     RandomListNode *copyRandomList(RandomListNode *head) {
         if (head == NULL) return NULL;
         unordered_map<RandomListNode*, RandomListNode*> p2p;
@@ -39,6 +40,45 @@ public:
             }
             tail = tail->next;
         }
+        return newhead;
+    }
+    
+    // 2. without a map
+    RandomListNode *_copyRandomList(RandomListNode *head) {
+        if (head == NULL) return NULL;
+        
+        RandomListNode* item = new RandomListNode(head->label);
+        item->random = head->random;
+        item->next = head->next;
+        head->next = item;
+        
+        RandomListNode* tail = item->next;
+        
+        while (tail != NULL) {
+            item = new RandomListNode(tail->label);
+            item->random = tail->random;
+            item->next = tail->next;
+            tail->next = item;
+            
+            tail = item->next;
+        }
+        tail = head;
+        while (tail != NULL) {
+            tail = tail->next;
+            if (tail->random != NULL) tail->random = tail->random->next;
+            tail = tail->next;
+        }
+        
+        RandomListNode* newhead = head->next;
+        RandomListNode* oldtail = head;
+        tail = newhead;
+        while (tail->next != NULL) {
+            oldtail->next = tail->next;
+            oldtail = tail->next;
+            tail->next = oldtail->next;
+            tail = oldtail->next;
+        }
+        oldtail->next = NULL;
         return newhead;
     }
 };
@@ -70,14 +110,13 @@ int main() {
     for (int i=0; i<9; i++) {
         items[i]->next = items[i+1];
     }
-    items[0]->next = NULL;
     items[2]->random = items[4];
     items[5]->random = items[1];
     items[8]->random = items[3];
     
     print_list(items[0]);
     Solution s;
-    RandomListNode* ret = s.copyRandomList(items[0]);
+    RandomListNode* ret = s._copyRandomList(items[0]);
     
     cout<<"==="<<endl;
     print_list(ret);
