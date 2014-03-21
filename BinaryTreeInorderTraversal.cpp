@@ -88,7 +88,42 @@ public:
         }
         return res;
     }
+    
+    vector<int> universal_traversal(TreeNode *root, int* map) {
+        vector<int> res;
+        vector<pair<TreeNode*, int> > stack;
+        stack.push_back(make_pair(root, -1));
+        while (!stack.empty()) {
+            pair<TreeNode*, int>& np = stack.back();
+            TreeNode* n = np.first;
+            if (n == NULL) {
+                stack.pop_back();
+                continue;
+            }
+            np.second++;
+            switch(map[np.second]) {
+                case 0:
+                    res.push_back(n->val);
+                    break;
+                case 1:
+                    stack.push_back(make_pair(n->left, -1));
+                    break;
+                case 2:
+                    stack.push_back(make_pair(n->right, -1));
+                    break;
+                default:stack.pop_back();
+            }
+        }
+        return res;
+    }
 };
+
+void print(vector<int> nums) {
+    for (int i=0; i<nums.size(); i++) {
+        cout<<nums[i]<<" ";
+    }
+    cout<<endl;
+}
 
 int main() {
     TreeNode nodes[10];
@@ -102,8 +137,18 @@ int main() {
 
     nodes[1].right = &nodes[3];
     // nodes[1].right= &nodes[4];
-
+    int preorder[] = {0, 1, 2, -1};
+    int inorder[] =  {1, 0, 2, -1};
+    int postorder[]= {1, 2, 0, -1};
+    
     Solution s;
+    cout<<"Preorder: "<<endl;
+    print(s.universal_traversal(&nodes[0], preorder));
+    cout<<"Inorder: "<<endl;
+    print(s.universal_traversal(&nodes[0], inorder));
+    cout<<"Postorder: "<<endl;
+    print(s.universal_traversal(&nodes[0], postorder));
+    
     vector<int> res = s.__inorderTraversal(&nodes[0]);
     
     for (int i=0; i<res.size(); i++) {
