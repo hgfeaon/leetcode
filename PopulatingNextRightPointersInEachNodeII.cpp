@@ -37,46 +37,46 @@ public:
         }
     }
     
-    void connect2(TreeLinkNode *root) {
-        TreeLinkNode* next_level_head = root;
-        TreeLinkNode* level_cur;
-        TreeLinkNode* next_level_pre;
-        TreeLinkNode* next_level_cur;
-        
-        int stage = 0;
-        
-        while (next_level_head != NULL) {
-            level_cur = next_level_head;
-            next_level_head = NULL;
-            next_level_pre  = NULL;
-            next_level_cur  = NULL;
-            stage = 0;
-            while (level_cur != NULL) {
-                if (stage == 2) {
-                    level_cur = level_cur->next;
-                    stage = 0;
-                    continue;
-                }
-                if (stage == 1) {
-                    stage++;
-                    next_level_cur = level_cur->right;
-                }
-                if (stage == 0) {
-                    stage++;
-                    next_level_cur = level_cur->left;
-                }
-                if (next_level_cur == NULL) continue;
-                
-                if (next_level_head == NULL) {
-                    next_level_head = next_level_cur;
-                }
-                if (next_level_pre != NULL) {
-                    next_level_pre->next = next_level_cur;
-                }
-                next_level_pre = next_level_cur;
+void connect2(TreeLinkNode *root) {
+    TreeLinkNode* next_level_head = root;
+    TreeLinkNode* level_cur;
+    TreeLinkNode* next_level_pre;
+    TreeLinkNode* next_level_cur;
+    
+    int stage = 0;
+    
+    while (next_level_head != NULL) {
+        level_cur = next_level_head;
+        next_level_head = NULL;
+        next_level_pre  = NULL;
+        next_level_cur  = NULL;
+        stage = 0;
+        while (level_cur != NULL) {
+            if (stage == 2) {
+                level_cur = level_cur->next;
+                stage = 0;
+                continue;
             }
+            if (stage == 1) {
+                stage++;
+                next_level_cur = level_cur->right;
+            }
+            if (stage == 0) {
+                stage++;
+                next_level_cur = level_cur->left;
+            }
+            if (next_level_cur == NULL) continue;
+            
+            if (next_level_head == NULL) {
+                next_level_head = next_level_cur;
+            }
+            if (next_level_pre != NULL) {
+                next_level_pre->next = next_level_cur;
+            }
+            next_level_pre = next_level_cur;
         }
     }
+}
 };
 
 int main() {
@@ -92,6 +92,7 @@ int main() {
 
     s.connect2(&root);
     cout<<left.next<<endl;
+    
 	system("pause");
 	return 0;
 }
