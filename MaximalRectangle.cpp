@@ -16,7 +16,8 @@ void print_matrix(int* m, int rows, int cols) {
 
 class Solution {
 public:
-    int maximalRectangle(vector<vector<char> > &matrix) {
+    // O(n^3)
+    int _maximalRectangle(vector<vector<char> > &matrix) {
         int rows = matrix.size();
         if (rows == 0) return 0;
         int cols = matrix[0].size();
@@ -48,12 +49,48 @@ public:
         delete[] memo;
         return max_rect;
     }
+    // O(n^2)
+    int maximalRectangle(vector<vector<char> > &matrix) {
+        int rows = matrix.size();
+        if (rows == 0) return 0;
+        int cols = matrix[0].size();
+        if (cols == 0) return 0;
+
+        vector<int> height(cols, 0);
+        vector<int> L, R;
+        L.resize(cols), R.resize(cols);
+        
+        int max_rect = 0;
+        
+        for (int i=0; i<rows; i++) {
+            for (int j=0; j<cols; j++) {
+                height[j] = matrix[i][j] == '1' ? height[j] + 1 : 0;
+            }
+            for (int j=0; j<cols; j++) {
+                L[j] = j;
+                while (L[j] - 1 >= 0 && height[L[j] - 1] >= height[j]) {
+                    L[j] = L[L[j] - 1];
+                }
+            }
+            for (int j=cols-1; j>=0; j--) {
+                R[j] = j;
+                while (R[j] + 1 < cols && height[R[j] + 1] >= height[j]) {
+                    R[j] = R[R[j] + 1];
+                }
+            }
+            for (int j=0; j<cols; j++) {
+                int rect = (R[j] - L[j] + 1) * height[j];
+                if (rect > max_rect) max_rect = rect;
+            }
+        }
+        return max_rect;
+    }
 };
 
 int main() {
     char mat[][4] =  {
                         {'1', '1', '0', '1'},
-                        {'1', '1', '1', '0'},
+                        {'1', '0', '1', '0'},
                         {'1', '1', '0', '1'},
                         {'0', '1', '1', '0'}
                     };
