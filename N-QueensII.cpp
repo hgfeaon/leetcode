@@ -43,7 +43,7 @@ public:
 
 int main() {
     Solution s;
-    cout<<s.totalNQueens(5)<<endl;
+    cout<<s.totalNQueens(10)<<endl;
 	system("pause");
 	return 0;
 }
