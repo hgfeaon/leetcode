@@ -29,8 +29,6 @@ public:
         if (increasing) peaks.push_back(n - 1);
         compact(A, peaks);
         
-        if (peaks.size() < 2) return 0;
-        
         int rain = 0;
 
         for (int i=1; i<peaks.size(); i++) {
@@ -68,8 +66,33 @@ public:
         }
         cout<<endl;
     }
-    
 
+    int trap2(int A[], int n) {
+        if (n < 2) return 0;
+        vector<int> lmax(n, 0);
+        vector<int> rmax(n, 0);
+        
+        int m = A[n-1];
+        for (int i=n-2; i >= 0; i--) {
+            if (A[i] > m) m = A[i];
+            rmax[i] = m;
+        }
+        
+        m = A[0];
+        for (int i=1; i<n; i++) {
+            if (A[i] > m) m = A[i];
+            lmax[i] = m;
+        }
+
+        int rain = 0;
+        for (int i=0; i<n; i++) {
+            int h = min(lmax[i], rmax[i]);
+            int v = h - A[i];
+            rain += v < 0 ? 0 : v;
+            
+        }
+        return rain;
+    }
 };
 
 
@@ -82,8 +105,11 @@ int main() {
 
     Solution s;
 
-    cout<<s.trap(blocks2, len2)<<endl;
     cout<<s.trap(blocks, len)<<endl;
+    cout<<s.trap(blocks2, len2)<<endl;
+    
+    cout<<s.trap2(blocks, len)<<endl;
+    cout<<s.trap2(blocks2, len2)<<endl;
     
 	system("pause");
 	return 0;
