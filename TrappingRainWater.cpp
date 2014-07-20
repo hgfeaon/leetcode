@@ -9,7 +9,6 @@ public:
     int trap(int A[], int n) {
         if (n < 1) return 0;
         vector<int> peaks;
-        vector<int> peaks_tmp;
 
         int last_idx = 0;
 
@@ -18,6 +17,7 @@ public:
             if (A[i] < A[last_idx]) {
                 if (increasing) {
                     peaks.push_back(last_idx);
+                    compact(A, peaks);
                 }
                 increasing = false;
             } else {
@@ -25,33 +25,12 @@ public:
             }
             last_idx = i;
         }
+        
         if (increasing) peaks.push_back(n - 1);
-
+        compact(A, peaks);
+        
         if (peaks.size() < 2) return 0;
         
-        bool updated = true;
-
-        while (updated) {
-            updated = false;
-            peaks_tmp.clear();
-            peaks_tmp.push_back(peaks[0]);
-            peaks_tmp.push_back(peaks[1]);
-            for (int i=2; i<peaks.size(); i++) {
-                int tlen = peaks_tmp.size();
-                int ai = peaks_tmp[tlen - 2];
-                int bi = peaks_tmp[tlen - 1];
-                int ci = peaks[i];
-
-                if (A[ai] >= A[bi] && A[ci] >= A[bi]) {
-                    peaks_tmp[tlen - 1] = ci;
-                    updated = true;
-                } else {
-                    peaks_tmp.push_back(ci);
-                }
-            }
-            swap(peaks, peaks_tmp);
-        }
-
         int rain = 0;
 
         for (int i=1; i<peaks.size(); i++) {
@@ -65,6 +44,23 @@ public:
         }
         return rain;
     }
+
+    void compact(int A[], vector<int> &peaks) {
+        int len = peaks.size();
+        if (len < 3) return;
+        bool updated = true;
+        while (updated && (len = peaks.size()) >= 3) {
+            updated = false;
+            int ai = peaks[len - 3];
+            int bi = peaks[len - 2];
+            int ci = peaks[len - 1];
+            if (A[ai] >= A[bi] && A[ci] >= A[bi] ) {
+                peaks[len - 2] = ci;
+                peaks.pop_back();
+                updated = true;
+            }
+        }
+    }
     
     void print(vector<int> &array) {
         for (int i=0; i<array.size(); i++) {
@@ -72,6 +68,8 @@ public:
         }
         cout<<endl;
     }
+    
+
 };
 
 
