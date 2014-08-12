@@ -23,11 +23,19 @@ public:
 
     vector<TreeNode*> dfs(int start, int end) {
 		vector<TreeNode*> res;
+<<<<<<< HEAD
 		if (start >= end) return res;
+=======
+		if (start >= end) {
+			res.push_back(NULL);
+			return res;
+		}
+>>>>>>> a4ac262681404df0e1b59fc0190dd781a1250f78
 		TreeNode* rt = NULL;
 		for (int i=start; i<end; i++) {
 			vector<TreeNode*> lsub = dfs(start, i);
 			vector<TreeNode*> rsub = dfs(i+1, end);
+<<<<<<< HEAD
 			if (lsub.empty() && rsub.empty()) {
 				rt = new TreeNode(i);
 				res.push_back(rt);
@@ -47,6 +55,9 @@ public:
 				}
 				continue;
 			}
+=======
+
+>>>>>>> a4ac262681404df0e1b59fc0190dd781a1250f78
 			for (int li=0; li<lsub.size(); li++) {
 				for (int ri=0; ri<rsub.size(); ri++) {
 					rt = new TreeNode(i);
@@ -84,7 +95,11 @@ void print(TreeNode* root) {
 int main() {
 	Solution s;
 
+<<<<<<< HEAD
 	vector<TreeNode*> res = s.generateTrees(3);
+=======
+	vector<TreeNode*> res = s.generateTrees(4);
+>>>>>>> a4ac262681404df0e1b59fc0190dd781a1250f78
 
 	for (int i=0; i<res.size(); i++) {
 
